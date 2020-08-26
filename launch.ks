@@ -54,5 +54,31 @@ lock throttle to 0.
 set ship:control:pilotmainthrottle to 0.
 
 when ship:altitude > 70000 then {
-  HUDTEXT("Welcome to space!", 8, 10, 24, rgb(1,1,0.5), true).
+  local keypress is "".
+
+  until keypress = "q" {
+    clearscreen.
+    HUDTEXT("Welcome to space!", 8, 10, 24, rgb(1,1,0.5), true).
+
+    set timeToApoapsis to 118.
+    print "Reaching apoapsis in T-" + timeToApoapsis + "seconds.".
+
+    print "Would you like to enter orbit? Type Y/n:  ".
+    set keypress to terminal:input:getchar().
+
+    if keypress = terminal:input:enter or keypress = "Y" {
+      print "Proceeding to orbit!".
+      runPath("orbit.ks").
+      break.
+    }
+
+    if keypress = "N" {
+      print "Returning to Kerbin...".
+      runPath("deorbit.ks").
+      break.
+    }
+
+    print "Invalid".
+    wait 1.
+  }
 }
