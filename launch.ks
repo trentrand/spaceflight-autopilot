@@ -55,6 +55,16 @@ unlock steering.
 sas on.
 set sasmode to "PROGRADE".
 
+until ship:altitude > 70000 {
+  if ship:apoapsis < 70000 {
+    lock throttle to 1.0.
+    set ship:control:pilotmainthrottle to 1.0.
+  } else {
+    lock throttle to 0.
+    set ship:control:pilotmainthrottle to 0.
+  }
+}
+
 when ship:altitude > 70000 then {
   local keypress is "".
 
