@@ -65,32 +65,31 @@ until ship:altitude > 70000 {
   }
 }
 
-when ship:altitude > 70000 then {
-  local keypress is "".
+sas off.
 
-  until keypress = "q" {
-    clearscreen.
-    HUDTEXT("Welcome to space!", 8, 10, 24, rgb(1,1,0.5), true).
+local keypress is "".
 
-    set timeToApoapsis to 118.
-    print "Reaching apoapsis in T-" + timeToApoapsis + "seconds.".
+until keypress = "q" {
+  clearscreen.
+  print "Welcome to space!".
 
-    print "Would you like to enter orbit? Type Y/n:  ".
-    set keypress to terminal:input:getchar().
+  print "Arriving to apoapsis in T-" + round(eta:apoapsis, 0) + " seconds.".
 
-    if keypress = terminal:input:enter or keypress = "Y" {
-      print "Proceeding to orbit!".
-      runPath("orbit.ks").
-      break.
-    }
+  print "Would you like to enter orbit? Type Y/n:  ".
+  set keypress to terminal:input:getchar().
 
-    if keypress = "N" {
-      print "Returning to Kerbin...".
-      runPath("deorbit.ks").
-      break.
-    }
-
-    print "Invalid".
-    wait 1.
+  if keypress = terminal:input:enter or keypress = "Y" {
+    print "Proceeding to orbit!".
+    runPath("0:automated-rocket-control/orbit.ks", compass).
+    break.
   }
+
+  if keypress = "N" {
+    print "Returning to Kerbin...".
+    runPath("0:automated-rocket-control/deorbit.ks").
+    break.
+  }
+
+  print "Invalid".
+  wait 0.5.
 }
