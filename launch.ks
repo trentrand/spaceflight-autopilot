@@ -48,10 +48,12 @@ until ship:apoapsis > 70000 {
   gravityTurn().
 }
 
-print "En route to sub-orbital flight, taking a break...".
-set direction to heading(compass, 0). // In case there boosters are still burning
-lock throttle to 0.
-set ship:control:pilotmainthrottle to 0.
+clearscreen.
+print "Vehicle is approaching space. Standing by...".
+
+unlock steering.
+sas on.
+set sasmode to "PROGRADE".
 
 when ship:altitude > 70000 then {
   local keypress is "".
