@@ -4,7 +4,7 @@ run: build
 	./RunVisualizer
 
 build:
-	cc $(CFLAGS) main.c -o RunVisualizer
+	cc $(CFLAGS) main.c -g -o RunVisualizer
 
 clean:
 	rm -f main.o RunVisualizer
