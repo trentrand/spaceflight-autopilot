@@ -9,7 +9,7 @@ typedef struct GeocoordinateList {
   Vector3 records[];
 } GeocoordinateList;
 
-void parseInputData(char filePath[], GeocoordinateList *parsedInputData) {
+void parseInputData(char filePath[], GeocoordinateList **parsedInputData) {
   FILE *inputData = fopen(filePath, "r");
   if (inputData == NULL) {
     fclose(inputData);
@@ -34,25 +34,25 @@ void parseInputData(char filePath[], GeocoordinateList *parsedInputData) {
   }
 
   // Initiate GeocoordinateList with flexible array member
-  parsedInputData = (GeocoordinateList *) malloc(sizeof(GeocoordinateList) +
+  *parsedInputData = (GeocoordinateList *) malloc(sizeof(GeocoordinateList) +
     (sizeof(Vector3) * geocoordinateListLength));
 
   if (parsedInputData == NULL) {
     fprintf(stderr, "Failed to allocate memory for Geocoordinate List.\n");
     exit(EXIT_FAILURE);
   }
-  parsedInputData->length = geocoordinateListLength;
+  (*parsedInputData)->length = geocoordinateListLength;
 
   size_t currentRecordIndex = 0;
 
   while ((numCharactersRead = getline(&inputLine, &lineLength, inputData)) != -1) {
-    if (currentRecordIndex >= parsedInputData->length - 1) {
+    if (currentRecordIndex >= (*parsedInputData)->length - 1) {
       break;
     }
 
     Vector3 record = {0};
     sscanf(inputLine, "V(%f, %f, %f)", &(record.x), &(record.y), &(record.z));
-    parsedInputData->records[currentRecordIndex++] = record;
+    (*parsedInputData)->records[currentRecordIndex++] = record;
 
     printf("%zu: Vector3(%f, %f, %f)\n", currentRecordIndex, record.x, record.y, record.z);
   }
