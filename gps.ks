@@ -4,7 +4,7 @@ print "Recording flight path".
 
 // Track soi-raw coordinates of ship at 1000ms resolution
 set recordedGeopositions to list().
-until ship:altitude > 5000 {
+until ship:altitude > 70000 {
   set soiRawGeoposition to ship:geoposition:position - ship:body:position.
   recordedGeopositions:add(soiRawGeoposition).
   wait 1.
@@ -18,7 +18,7 @@ if exists(gpsOutPath) {
 
 set logfile to create(gpsOutPath).
 
-logfile:writeln(recordedGeopositions:length).
+logfile:writeln(recordedGeopositions:length:tostring).
 for record in recordedGeopositions {
   logfile:writeln(record:tostring).
 }

@@ -119,6 +119,11 @@ int main(int argc, char *argv[argc+1]) {
 
         DrawSphere((Vector3){ 0.0f, 0.0f, 0.0f }, earthRadius, BLUE);
 
+        for (size_t recordIndex = 0; recordIndex < inputData->length; recordIndex++) {
+          DrawSphere(inputData->records[recordIndex], 5000.0f, GREEN);
+          /* printf("Vector3(%f, %f, %f)\n", inputData->records[recordIndex].x, inputData->records[recordIndex].y, inputData->records[recordIndex].z); */
+        }
+
         rlPushMatrix();
           rlRotatef(moonOrbitRotation, 0.0f, 1.0f, 0.0f);
           rlTranslatef(moonOrbitRadius, 0.0f, 0.0f);
