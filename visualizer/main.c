@@ -84,6 +84,8 @@ int main(int argc, char *argv[argc+1]) {
   const float visualizerScale = 0.00001f; // 0.00001 units in visualizer == 1 meter in simulator
 
   const float earthRadius = 600000.0f;
+  const float earthAtmosphereAltitude = 70000.0f;
+
   const float moonRadius = 200000.0f;
   const float moonOrbitRadius = 12000000.0f;
   const float rotationSpeed = 0.1f;
@@ -111,18 +113,15 @@ int main(int argc, char *argv[argc+1]) {
 
     BeginDrawing();
     {
-      ClearBackground((Color){ 52,60,64 });
+      ClearBackground((Color){ 2, 7, 9, 200 });
+
+      BeginBlendMode(BLEND_ALPHA);
 
       BeginMode3D(camera);
       {
         rlScalef(visualizerScale, visualizerScale, visualizerScale);
 
-        DrawSphere((Vector3){ 0.0f, 0.0f, 0.0f }, earthRadius, BLUE);
-
-        for (size_t recordIndex = 0; recordIndex < inputData->length; recordIndex++) {
-          DrawSphere(inputData->records[recordIndex], 5000.0f, GREEN);
-          /* printf("Vector3(%f, %f, %f)\n", inputData->records[recordIndex].x, inputData->records[recordIndex].y, inputData->records[recordIndex].z); */
-        }
+        DrawCircle3D((Vector3){ 0.0f, 0.0f, 0.0f }, moonOrbitRadius, (Vector3){ 1, 0, 0 }, 90.0f, Fade(WHITE, 0.15f));
 
         rlPushMatrix();
           rlRotatef(moonOrbitRotation, 0.0f, 1.0f, 0.0f);
@@ -135,10 +134,17 @@ int main(int argc, char *argv[argc+1]) {
           rlPopMatrix();
         rlPopMatrix();
 
-        DrawCircle3D((Vector3){ 0.0f, 0.0f, 0.0f }, moonOrbitRadius, (Vector3){ 1, 0, 0 }, 90.0f, Fade(WHITE, 0.15f));
-        DrawGrid(24, 1.0f);
+        DrawSphere((Vector3){ 0.0f, 0.0f, 0.0f }, earthRadius, (Color){ 93, 161, 224, 255 });
+
+        for (size_t recordIndex = 0; recordIndex < inputData->length; recordIndex++) {
+          DrawSphere(inputData->records[recordIndex], 5000.0f, GREEN);
+        }
+
+        DrawSphere((Vector3){ 0.0f, 0.0f, 0.0f }, earthRadius + earthAtmosphereAltitude, Fade(WHITE, 0.066f));
       }
       EndMode3D();
+
+      EndBlendMode();
     }
     EndDrawing();
   }
