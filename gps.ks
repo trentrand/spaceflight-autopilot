@@ -5,7 +5,7 @@ print "Recording flight path".
 // Track soi-raw coordinates of ship at 1000ms resolution
 set recordedGeopositions to list().
 until ship:altitude > 70000 {
-  set soiRawGeoposition to ship:geoposition:position - ship:body:position.
+  set soiRawGeoposition to ship:position - body:position.
   recordedGeopositions:add(soiRawGeoposition).
   wait 1.
 }

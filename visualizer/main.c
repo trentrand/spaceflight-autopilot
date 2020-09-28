@@ -106,10 +106,11 @@ int main(int argc, char *argv[argc+1]) {
   SetTargetFPS(60);
 
   while (!WindowShouldClose()) {
-    UpdateCamera(&camera);
 
     moonRotation += (5.0f * rotationSpeed);
     moonOrbitRotation += (365 / 360.0f * (5.0f * rotationSpeed) * rotationSpeed);
+
+    UpdateCamera(&camera);
 
     BeginDrawing();
     {
@@ -137,7 +138,7 @@ int main(int argc, char *argv[argc+1]) {
         DrawSphere((Vector3){ 0.0f, 0.0f, 0.0f }, earthRadius, (Color){ 93, 161, 224, 255 });
 
         for (size_t recordIndex = 0; recordIndex < inputData->length; recordIndex++) {
-          DrawSphere(inputData->records[recordIndex], 5000.0f, GREEN);
+          DrawSphere(inputData->records[recordIndex], 1000.0f, GREEN);
         }
 
         DrawSphere((Vector3){ 0.0f, 0.0f, 0.0f }, earthRadius + earthAtmosphereAltitude, Fade(WHITE, 0.066f));
