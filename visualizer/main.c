@@ -55,7 +55,7 @@ void parseInputData(char filePath[], GeocoordinateList **parsedInputData) {
     sscanf(inputLine, "V(%f, %f, %f)", &(record.x), &(record.y), &(record.z));
     (*parsedInputData)->records[currentRecordIndex++] = record;
 
-    printf("%zu: Vector3(%f, %f, %f)\n", currentRecordIndex, record.x, record.y, record.z);
+    printf("%zu: Vector3(%f, %f, %f)\n", currentRecordIndex - 1, record.x, record.y, record.z);
   }
 
   fclose(inputData);
@@ -93,6 +93,9 @@ int main(int argc, char *argv[argc+1]) {
   float moonRotation = 0.0f;
   float moonOrbitRotation = 0.0f;
 
+  int vehiclePositionIndex = 0;
+  Model vehicleModel = LoadModelFromMesh(GenMeshPoly(3, 10000));
+
   Camera camera = { 0 };
   const float cameraPosition = 100.0f;
   camera.position = (Vector3){ cameraPosition, cameraPosition, cameraPosition };
@@ -109,6 +112,12 @@ int main(int argc, char *argv[argc+1]) {
 
     moonRotation += (5.0f * rotationSpeed);
     moonOrbitRotation += (365 / 360.0f * (5.0f * rotationSpeed) * rotationSpeed);
+
+    if (vehiclePositionIndex < inputData->length - 1) {
+      vehiclePositionIndex += 1;
+    } else {
+      vehiclePositionIndex = 0;
+    }
 
     UpdateCamera(&camera);
 
@@ -137,8 +146,10 @@ int main(int argc, char *argv[argc+1]) {
 
         DrawSphere((Vector3){ 0.0f, 0.0f, 0.0f }, earthRadius, (Color){ 93, 161, 224, 255 });
 
+        DrawModel(vehicleModel, inputData->records[vehiclePositionIndex], 1.0f, WHITE);
+
         for (size_t recordIndex = 0; recordIndex < inputData->length; recordIndex++) {
-          DrawSphere(inputData->records[recordIndex], 1000.0f, GREEN);
+          DrawLine3D(inputData->records[recordIndex], inputData->records[(recordIndex + 1) % inputData->length], Fade(WHITE, 0.25f));
         }
 
         DrawSphere((Vector3){ 0.0f, 0.0f, 0.0f }, earthRadius + earthAtmosphereAltitude, Fade(WHITE, 0.066f));
@@ -153,6 +164,7 @@ int main(int argc, char *argv[argc+1]) {
   CloseWindow();
 
   free(inputData);
+  UnloadModel(vehicleModel);
 
   return EXIT_SUCCESS;
 }
