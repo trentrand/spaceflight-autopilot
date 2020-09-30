@@ -47,15 +47,17 @@ void parseInputData(char filePath[], GeocoordinateList **parsedInputData) {
   size_t currentRecordIndex = 0;
 
   while ((numCharactersRead = getline(&inputLine, &lineLength, inputData)) != -1) {
-    if (currentRecordIndex >= (*parsedInputData)->length - 1) {
+    if (currentRecordIndex >= (*parsedInputData)->length) {
       break;
     }
 
     Vector3 record = {0};
     sscanf(inputLine, "V(%f, %f, %f)", &(record.x), &(record.y), &(record.z));
-    (*parsedInputData)->records[currentRecordIndex++] = record;
+    (*parsedInputData)->records[currentRecordIndex] = record;
 
-    printf("%zu: Vector3(%f, %f, %f)\n", currentRecordIndex - 1, record.x, record.y, record.z);
+    printf("%zu: Vector3(%f, %f, %f)\n", currentRecordIndex, record.x, record.y, record.z);
+
+    currentRecordIndex++;
   }
 
   fclose(inputData);
@@ -76,8 +78,8 @@ int main(int argc, char *argv[argc+1]) {
   parseInputData(inputFilePath, &inputData);
   printf("Number of records parsed: %zu \n", inputData->length);
 
-  const int screenWidth = 1360;
-  const int screenHeight = 768;
+  const int screenWidth = 1920;
+  const int screenHeight = 1080;
 
   InitWindow(screenWidth, screenHeight, "Automated Rocket Control Visualizer");
 
@@ -149,6 +151,7 @@ int main(int argc, char *argv[argc+1]) {
         DrawModel(vehicleModel, inputData->records[vehiclePositionIndex], 1.0f, WHITE);
 
         for (size_t recordIndex = 0; recordIndex < inputData->length; recordIndex++) {
+          if (recordIndex == inputData->length - 1) { continue; }
           DrawLine3D(inputData->records[recordIndex], inputData->records[(recordIndex + 1) % inputData->length], Fade(WHITE, 0.25f));
         }
 
