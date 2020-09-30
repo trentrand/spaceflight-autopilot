@@ -1,4 +1,4 @@
-set gpsOutPath to "gps.out.txt".
+declare parameter outputFilename is "gps.out".
 
 print "Recording flight path".
 
@@ -12,11 +12,11 @@ until ship:altitude > 70000 {
 
 switch to archive.
 
-if exists(gpsOutPath) {
-  deletePath(gpsOutPath).
+if exists(outputFilename) {
+  deletePath(outputFilename).
 }
 
-set logfile to create(gpsOutPath).
+set logfile to create(outputFilename).
 
 logfile:writeln(recordedGeopositions:length:tostring).
 for record in recordedGeopositions {
