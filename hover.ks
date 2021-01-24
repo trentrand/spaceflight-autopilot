@@ -1,9 +1,8 @@
 clearscreen.
 
-set targetAltitude to 1000.
+set targetAltitude to 100.
 print "Hovering at target altitude " + targetAltitude.
 
-set compass to 0.
 sas on.
 rcs on.
 stage.
@@ -13,7 +12,7 @@ set kP to 0.5.
 set kI to 0.0005.
 set kD to 0.5.
 
-set pid to pidloop(kP, kI, kD, -1, 1).
+set pid to pidloop(kP, kI, kD, 0, 1).
 
 set pid:setpoint to targetAltitude.
 
@@ -28,8 +27,7 @@ until maxthrust = 0 {
   set altitude to ship:apoapsis.
 
   set out to pid:update(time:seconds, altitude).
-
-  set thrott to max(out, 0).
+  set thrott to out.
 
   print "Altitude  : " + round(altitude).
   print "PID Out: " + out.
