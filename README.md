@@ -1,11 +1,20 @@
-# automated-rocket-controller
-🚀  A series of scripted autopilot controllers for rocket simulation
+# spaceflight-autopilot
+🚀  A series of scripted spaceflight maneuvers for a rocket simulator
 
-This repository contains code which attempts to automate various space flight manuevars and operations - such as launching, entering orbit, collecting science and landing.
-The code is interpreted by an simulated on-board computer within a spacecraft simulator application.
+This repository contains code which attempts to automate and visualize various spaceflight maneuvers such as launching, orbiting, de-orbiting, hovering and landing.
 
-To demonstrate these automated routines without requring the simulator, I am building a visualizer which accurately renders the SOI and the flight path of the spacecraft.
-Data for the visualizer will be recorded using the GPS software written to run on a seperate simulated on-board computer.
+## Automated flight maneuvers 
 
-Here's a demonstration of the most recent progress on the visualizer (WIP):
-![Demo CountPages alpha](https://p56.f1.n0.cdn.getcloudapp.com/items/jkuZzN9W/DemoOfVisualizer.gif?source=viewer&v=6b85aee146b3ca2de0a5a86d329f5ff9)
+The spaceflight control code is written in the [KerboScript Language](https://ksp-kos.github.io/KOS/language.html).
+
+Within the spaceflight simulator application, the flight control code is interpreted by a virtual flight controller on-board the spacecraft.
+
+## Visualizer
+
+The visualizer provides the ability to view these spaceflight maneuvers outside of the simulator application.
+
+The GPS flight control code is responsible for recording the simulated spacecraft's GPS location and altitude data.
+The simulator consumes this data to accurately render the SOI and the flight path of the spacecraft.
+
+**Demonstration of the visualizer rendering a sub-orbital flight:**
+![Demo of visualizer with sub-orbital flight recording](https://github.com/trentrand/spaceflight-autopilot/blob/master/visualizer/assets/demo.mov?raw=true)
